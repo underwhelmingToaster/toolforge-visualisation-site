@@ -25,7 +25,6 @@ export default {
       for (let i = 0; i < tabs.length; i++) {
         tabs[i].className = tabs[i].className.replace(' active', '')
         if (tabNr === i) {
-          console.log('found ' + i)
           tabs[i].className += ' active'
         }
       }
