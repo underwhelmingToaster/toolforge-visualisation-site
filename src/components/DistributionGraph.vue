@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.getJsonData('https://qrank.wmcloud.org/download/osmviews-stats.json')
+    // this.getJsonData('https://qrank.wmcloud.org/download/osmviews-stats.json')
   },
   props: {
     fileUrl: String
