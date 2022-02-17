@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "graphWidth + '/' + graphHeight" />
+    <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "'Graph QRank ' + graphWidth + '/' + graphHeight" />
   </div>
 </template>
 
@@ -25,15 +25,15 @@ export default {
       this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
     },
     calculateGraphHeight (windowHeight, windowWidth) {
-      if (windowWidth < 800) {
-        return 300
+      if (windowHeight < 500) {
+        return (500 - 100) * 0.8
       } else {
-        return windowHeight * 0.7
+        return (windowHeight - 100) * 0.8
       }
     },
     calculateGraphWidth (windowHeight, windowWidth) {
       if (windowWidth < 800) {
-        return 400
+        return 800 * 0.8
       } else {
         return windowWidth * 0.8
       }

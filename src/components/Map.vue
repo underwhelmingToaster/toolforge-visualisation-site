@@ -3,7 +3,6 @@
     :zoom="zoom"
     :center="center"
     class="map"
-    :style="{'width': '500px', 'height': '400px'}"
   >
     <l-tile-layer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <div class="sub-container">
-      <DistributionViewer :json-data=jsonData :x-log=true :y-log=true :width=subContainerWidth :height=subContainerWidth  :key= "subContainerWidth + '/' + subContainerHeight"/>
+      <DistributionViewer :json-data=jsonData :x-log=true :y-log=true :width=subContainerWidth :height=subContainerHeight  :key= "'Graph OSMViews ' +subContainerWidth + '/' + subContainerHeight"/>
     </div>
-    <div class="sub-container" >
-      <Map :width=subContainerWidth :height=subContainerHeight :key= "subContainerWidth + '/' + subContainerHeight" />
+    <div class="sub-container">
+      <div :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}" class="leaflet-map-pane" >
+        <Map :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}" />
+      </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -34,15 +35,19 @@ export default {
       this.subContainerWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
     },
     calculateGraphHeight (windowHeight, windowWidth) {
-      if (windowWidth < 800) {
-        return 300
+      if (windowWidth < 1100) {
+        return windowWidth * 0.8
       } else {
-        return windowHeight * 0.6
+        if (windowHeight < 500) {
+          return (500 - 100) * 0.8
+        } else {
+          return (windowHeight - 100) * 0.8
+        }
       }
     },
     calculateGraphWidth (windowHeight, windowWidth) {
-      if (windowWidth < 800) {
-        return 400
+      if (windowWidth < 1100) {
+        return windowWidth * 0.8
       } else {
         return windowWidth * 0.4
       }
@@ -61,7 +66,17 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  justify-content: left;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 }
+.leaflet-map-pane {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sub-container {
+  margin-bottom: 100px;
+}
+
 </style>
