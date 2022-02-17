@@ -59,7 +59,7 @@ export default {
       this.opts.scales.x = 3
     }
     if (this.yLog) {
-      this.opts.scales.y = 3
+      this.opts.scales.y.distr = 3
     }
   },
   data () {
@@ -82,8 +82,7 @@ export default {
         ],
         scales: {
           y: {
-            distr: 1,
-            time: false
+            distr: 1
           },
           x: {
             distr: 1,
