@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div>
-      <DistributionViewer :json-data=jsonData :x-log=true :y-log=true />
+    <div class="sub-container">
+      <DistributionViewer :json-data=jsonData :x-log=true :y-log=true :width=subContainerWidth :height=subContainerWidth  :key= "subContainerWidth + '/' + subContainerHeight"/>
     </div>
-    <div>
-      <Map class="Map"/>
+    <div class="sub-container" >
+      <Map :width=subContainerWidth :height=subContainerHeight :key= "subContainerWidth + '/' + subContainerHeight" />
     </div>
   </div>
 
@@ -24,14 +24,14 @@ export default {
   data () {
     return {
       jsonData: jsonData,
-      graphWidth: 0,
-      graphHeight: 0
+      subContainerHeight: 0,
+      subContainerWidth: 0
     }
   },
   methods: {
     resizeHandler () {
-      this.graphHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
-      this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
+      this.subContainerHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
+      this.subContainerWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
     },
     calculateGraphHeight (windowHeight, windowWidth) {
       if (windowWidth < 800) {
@@ -52,19 +52,13 @@ export default {
     window.addEventListener('resize', this.resizeHandler)
   },
   mounted () {
-    this.graphHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
-    this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
+    this.subContainerHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
+    this.subContainerWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
   }
 }
 </script>
 
 <style scoped>
-
-.Map {
-  width: 300px;
-  height: 100px;
-}
-
 .container {
   display: flex;
   justify-content: left;
