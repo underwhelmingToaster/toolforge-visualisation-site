@@ -1,5 +1,7 @@
 <template>
-  <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "graphWidth + '/' + graphHeight" />
+  <div class="container">
+    <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "graphWidth + '/' + graphHeight" />
+  </div>
 </template>
 
 <script>
@@ -49,5 +51,10 @@ export default {
 </script>
 
 <style scoped>
+
+.container {
+  display: flex;
+  justify-content: center;
+}
 
 </style>

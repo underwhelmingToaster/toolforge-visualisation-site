@@ -1,10 +1,8 @@
 <template>
-  <div class="graph-container">
-    <UplotVue
-      :data="data"
-      :options="opts"
-    />
-  </div>
+  <UplotVue
+    :data="data"
+    :options="opts"
+  />
 </template>
 
 <script>
@@ -57,7 +55,7 @@ export default {
   beforeMount () {
     this.data = this.generateDataSeries()
     if (this.xLog) {
-      this.opts.scales.x = 3
+      this.opts.scales.x.distr = 3
     }
     if (this.yLog) {
       this.opts.scales.y.distr = 3
@@ -96,7 +94,10 @@ export default {
           },
           {
             label: 'Views',
-            points: { show: false },
+            points: {
+              fill: 'blue',
+              show: false
+            },
             stroke: 'blue',
             fill: 'blue'
           }
@@ -108,10 +109,5 @@ export default {
 </script>
 
 <style scoped>
-.graph-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
 
 </style>
