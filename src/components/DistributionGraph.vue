@@ -3,8 +3,6 @@
     <UplotVue
       :data="data"
       :options="opts"
-      @create="resize"
-      @resize="resize"
     />
   </div>
 </template>

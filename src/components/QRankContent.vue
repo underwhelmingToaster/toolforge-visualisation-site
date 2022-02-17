@@ -1,5 +1,5 @@
 <template>
-  <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth  />
+  <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "graphWidth + '/' + graphHeight" />
 </template>
 
 <script>
@@ -10,25 +10,39 @@ export default {
   data () {
     return {
       jsonData: jsonData,
-      graphWidth: 1000,
-      graphHeight: 600
+      graphWidth: 0,
+      graphHeight: 0
     }
   },
   components: {
     DistributionGraph
   },
   methods: {
-    resizeHandler (e) {
-      this.graphHeight = window.innerHeight - 400
-      this.graphWidth = window.innerWidth - 400
+    resizeHandler () {
+      this.graphHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
+      this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
+    },
+    calculateGraphHeight (windowHeight, windowWidth) {
+      if (windowWidth < 800) {
+        return 300
+      } else {
+        return windowHeight * 0.7
+      }
+    },
+    calculateGraphWidth (windowHeight, windowWidth) {
+      if (windowWidth < 800) {
+        return 400
+      } else {
+        return windowWidth * 0.8
+      }
     }
   },
   created () {
     window.addEventListener('resize', this.resizeHandler)
   },
   mounted () {
-    this.graphHeight = window.innerHeight
-    this.graphWidth = window.innerWidth
+    this.graphHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
+    this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
   }
 
 }
