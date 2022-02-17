@@ -1,12 +1,17 @@
 <template>
-  qrank
-  <DistributionGraph file-url="https://qrank.wmcloud.org/download/osmviews-stats.json" />
+  <DistributionGraph :json-data=jsonData :y-log=true />
 </template>
 
 <script>
 import DistributionGraph from '@/components/DistributionGraph'
+import jsonData from '../assets/qrank-stats.json'
 export default {
   name: 'QRank-content',
+  data () {
+    return {
+      jsonData: jsonData
+    }
+  },
   components: {
     DistributionGraph
   }

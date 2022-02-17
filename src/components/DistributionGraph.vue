@@ -1,17 +1,35 @@
 <template>
-  <UplotVue
-    :data="data"
-    :options="opts"
-  />
+  <div class="graph-container">
+    <UplotVue
+      :data="data"
+      :options="opts"
+      @create="resize"
+      @resize="resize"
+    />
+  </div>
 </template>
 
 <script>
-import jsonData from './../assets/qrank-stats.json'
+
 import UplotVue from 'uplot-vue'
 import 'uplot/dist/uPlot.min.css'
 
 export default {
   name: 'QRank-content',
+  props: {
+    jsonData: {
+      type: Object,
+      required: true
+    },
+    xLog: {
+      type: Boolean,
+      default: false
+    },
+    yLog: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     UplotVue
   },
@@ -21,35 +39,54 @@ export default {
     },
     generateDataSeries () {
       return [
-        jsonData.Samples.map((item) => {
+        this.jsonData.Samples.map((item) => {
           return item[1]
         }),
-        jsonData.Samples.map((item) => {
+        this.jsonData.Samples.map((item) => {
           return item[2]
         })
       ]
+    },
+    resize () {
+      // TODO resize doesnt work
+      this.opts.height = window.innerWidth - 400
+      this.opts.width = window.innerHeight - 200
     }
   },
   beforeMount () {
-    console.log(this.generateDataSeries())
     this.data = this.generateDataSeries()
-  },
-  props: {
-    fileUrl: String
+    if (this.xLog) {
+      this.opts.scales.x = 3
+    }
+    if (this.yLog) {
+      this.opts.scales.y = 3
+    }
   },
   data () {
     return {
-      jsonData: jsonData,
       data: [],
       opts: {
-        width: 1920,
+        title: 'View Distribution',
         height: 600,
-        title: 'Area Fill',
+        width: 1400,
+        axes: [
+          {
+            space: 100
+          },
+          {
+            size: 100,
+            grid: {
+              show: false
+            }
+          }
+        ],
         scales: {
           y: {
-            distr: 3
+            distr: 1,
+            time: false
           },
           x: {
+            distr: 1,
             time: false
           }
         },
@@ -58,8 +95,8 @@ export default {
             label: 'Rank'
           },
           {
-            label: '',
-            points: { show: true },
+            label: 'Views',
+            points: { show: false },
             stroke: 'blue',
             fill: 'blue'
           }
@@ -71,5 +108,10 @@ export default {
 </script>
 
 <style scoped>
+.graph-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 </style>

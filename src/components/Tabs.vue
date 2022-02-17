@@ -1,7 +1,7 @@
 <template>
   <div class="tabBar">
-    <button class="tab active" @click="setTab(0)">Tab 1</button>
-    <button class="tab" @click="setTab(1)" >Tab 2</button>
+    <button class="tab active" @click="setTab(0)">QRank</button>
+    <button class="tab" @click="setTab(1)" >OSM Views</button>
   </div>
 </template>
 
@@ -68,7 +68,7 @@ export default {
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: baseline;
-    width: auto;
+    min-width: 7em;
   }
 
   .tab:hover,

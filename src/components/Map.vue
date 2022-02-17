@@ -3,11 +3,12 @@
     :center="center"
     :zoom="zoom"
     class="map"
+    style="width:700px; height: 500px"
   >
     <l-tile-layer
-      url="url"
-    >
-    </l-tile-layer>
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    ></l-tile-layer>
+    <l-control-layers />
   </l-map>
 </template>
 
@@ -23,7 +24,6 @@ export default {
   },
   data () {
     return {
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png/',
       center: [49.1193089, 6.1757156],
       zoom: 12
     }
