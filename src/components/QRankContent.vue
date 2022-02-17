@@ -1,5 +1,5 @@
 <template>
-  <DistributionGraph :json-data=jsonData :y-log=true />
+  <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth  />
 </template>
 
 <script>
@@ -9,12 +9,28 @@ export default {
   name: 'QRank-content',
   data () {
     return {
-      jsonData: jsonData
+      jsonData: jsonData,
+      graphWidth: 1000,
+      graphHeight: 600
     }
   },
   components: {
     DistributionGraph
+  },
+  methods: {
+    resizeHandler (e) {
+      this.graphHeight = window.innerHeight - 400
+      this.graphWidth = window.innerWidth - 400
+    }
+  },
+  created () {
+    window.addEventListener('resize', this.resizeHandler)
+  },
+  mounted () {
+    this.graphHeight = window.innerHeight
+    this.graphWidth = window.innerWidth
   }
+
 }
 </script>
 

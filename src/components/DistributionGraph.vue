@@ -28,6 +28,14 @@ export default {
     yLog: {
       type: Boolean,
       default: false
+    },
+    width: {
+      type: Number,
+      default: 1000
+    },
+    height: {
+      type: Number,
+      default: 600
     }
   },
   components: {
@@ -46,11 +54,6 @@ export default {
           return item[2]
         })
       ]
-    },
-    resize () {
-      // TODO resize doesnt work
-      this.opts.height = window.innerWidth - 400
-      this.opts.width = window.innerHeight - 200
     }
   },
   beforeMount () {
@@ -61,14 +64,14 @@ export default {
     if (this.yLog) {
       this.opts.scales.y.distr = 3
     }
+    this.opts.width = this.width
+    this.opts.height = this.height
   },
   data () {
     return {
       data: [],
       opts: {
         title: 'View Distribution',
-        height: 600,
-        width: 1400,
         axes: [
           {
             space: 100
