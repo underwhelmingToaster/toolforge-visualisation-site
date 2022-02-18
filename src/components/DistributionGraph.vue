@@ -39,9 +39,6 @@ export default {
     UplotVue
   },
   methods: {
-    getJsonData (fileUrl) {
-      // axios.get(fileUrl).then(response => (this.jsonData = response.data))
-    },
     generateDataSeries () {
       return [
         this.jsonData.Samples.map((item) => {

@@ -1,20 +1,31 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    v-if="jsonData !== ''">
     <div class="sub-container">
-      <DistributionViewer :json-data=jsonData :x-log=true :y-log=true :width=subContainerWidth :height=subContainerHeight  :key= "'Graph OSMViews ' +subContainerWidth + '/' + subContainerHeight"/>
+      <DistributionViewer
+        :json-data=jsonData
+        :x-log=true
+        :y-log=true
+        :width=subContainerWidth
+        :height=subContainerHeight
+        :key="'Graph OSMViews ' +subContainerWidth + '/' + subContainerHeight"
+      />
     </div>
     <div class="sub-container">
-      <div :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}" class="leaflet-map-pane" >
-        <Map :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}" />
+      <div
+        :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"
+        class="leaflet-map-pane">
+        <Map :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"/>
       </div>
     </div>
   </div>
+  <p v-else>Could not get OSM Data.</p>
 </template>
 
 <script>
 import Map from '@/components/Map'
 import DistributionViewer from '@/components/DistributionGraph'
-import jsonData from '../assets/osmviews-stats.json'
 
 export default {
   name: 'OSMViewsContent',
@@ -22,9 +33,11 @@ export default {
     Map,
     DistributionViewer
   },
+  props: {
+    jsonData: String
+  },
   data () {
     return {
-      jsonData: jsonData,
       subContainerHeight: 0,
       subContainerWidth: 0
     }
@@ -69,6 +82,7 @@ export default {
   justify-content: space-evenly;
   flex-wrap: wrap;
 }
+
 .leaflet-map-pane {
   position: relative;
   top: 50%;

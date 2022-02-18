@@ -1,17 +1,27 @@
 <template>
   <div class="container">
-    <DistributionGraph :json-data=jsonData :y-log=true :height=graphHeight :width=graphWidth :key= "'Graph QRank ' + graphWidth + '/' + graphHeight" />
+    <DistributionGraph
+      :json-data=jsonData
+      :y-log=true
+      :height=graphHeight
+      :width=graphWidth
+      :key="'Graph QRank ' + graphWidth + '/' + graphHeight"
+      v-if="jsonData !== ''"
+    />
+    <p v-else>Could not get QRank data.</p>
   </div>
 </template>
 
 <script>
 import DistributionGraph from '@/components/DistributionGraph'
-import jsonData from '../assets/qrank-stats.json'
+
 export default {
   name: 'QRank-content',
+  props: {
+    jsonData: String
+  },
   data () {
     return {
-      jsonData: jsonData,
       graphWidth: 0,
       graphHeight: 0
     }
@@ -39,12 +49,12 @@ export default {
       }
     }
   },
-  created () {
-    window.addEventListener('resize', this.resizeHandler)
-  },
   mounted () {
     this.graphHeight = this.calculateGraphHeight(window.innerHeight, window.innerWidth)
     this.graphWidth = this.calculateGraphWidth(window.innerHeight, window.innerWidth)
+  },
+  created () {
+    window.addEventListener('resize', this.resizeHandler)
   }
 
 }

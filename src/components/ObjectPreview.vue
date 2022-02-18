@@ -6,7 +6,7 @@
 export default {
   name: 'ObjectPreview',
   props: {
-
+    jsonContent: String
   }
 }
 </script>
