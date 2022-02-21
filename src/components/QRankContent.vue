@@ -1,33 +1,41 @@
 <template>
-  <div class="container">
-    <DistributionGraph
-      :json-data=jsonData
-      :y-log=true
-      :height=graphHeight
-      :width=graphWidth
-      :key="'Graph QRank ' + graphWidth + '/' + graphHeight"
-      v-if="jsonData !== ''"
-    />
-    <p v-else>Could not get QRank data.</p>
+  <div class="container" v-if="jsonData !== null">
+    <div class="graph">
+      <DistributionGraph
+        :json-data=jsonData
+        :y-log=true
+        :height=graphHeight
+        :width=graphWidth
+        :key="'Graph QRank ' + graphWidth + '/' + graphHeight"
+      />
+    </div>
+    <div class="objectPreview">
+      <ObjectPreview :json-data=jsonData :currentTooltipRank=this.store.currentTooltipRank />
+    </div>
   </div>
+  <p v-else>Could not get QRank data.</p>
 </template>
 
 <script>
 import DistributionGraph from '@/components/DistributionGraph'
+import ObjectPreview from '@/components/ObjectPreview'
+import { store } from '@/store'
 
 export default {
   name: 'QRank-content',
   props: {
-    jsonData: String
+    jsonData: Object
   },
   data () {
     return {
+      store,
       graphWidth: 0,
       graphHeight: 0
     }
   },
   components: {
-    DistributionGraph
+    DistributionGraph,
+    ObjectPreview
   },
   methods: {
     resizeHandler () {
@@ -63,6 +71,14 @@ export default {
 <style scoped>
 
 .container {
+}
+
+.graph {
+  display: flex;
+  justify-content: center;
+}
+
+.objectPreview {
   display: flex;
   justify-content: center;
 }

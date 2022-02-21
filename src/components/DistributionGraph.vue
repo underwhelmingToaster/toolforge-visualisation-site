@@ -103,8 +103,9 @@ export default {
           if (s.show) {
             const xVal = u.data[0][idx]
             const yVal = u.data[i][idx]
-
-            store.currentTooltipRank = xVal
+            if (xVal !== undefined) {
+              store.currentTooltipRank = xVal
+            }
             tt.textContent = '(Rank: ' + xVal + ' / Views: ' + yVal + ')'
             tt.style.left = Math.round(u.valToPos(xVal, 'x')) + 'px'
             tt.style.top = Math.round(u.valToPos(yVal, s.scale)) + 'px'

@@ -1,7 +1,7 @@
 <template>
   <div
     class="container"
-    v-if="jsonData !== ''">
+    v-if="jsonData !== null">
     <div class="sub-container">
       <DistributionViewer
         :json-data=jsonData
@@ -34,7 +34,7 @@ export default {
     DistributionViewer
   },
   props: {
-    jsonData: String
+    jsonData: Object
   },
   data () {
     return {

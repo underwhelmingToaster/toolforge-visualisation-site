@@ -23,8 +23,8 @@ export default {
   data () {
     return {
       store,
-      qrankData: '',
-      osmData: ''
+      qrankData: null,
+      osmData: null
     }
   },
   beforeCreate () {
