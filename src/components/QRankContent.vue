@@ -81,6 +81,7 @@ export default {
 .objectPreview {
   display: flex;
   justify-content: center;
+  margin: 34px;
 }
 
 </style>

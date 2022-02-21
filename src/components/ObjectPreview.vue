@@ -1,10 +1,13 @@
 <template>
   <div class="container" v-if="itemData !== null" >
     <div class="image">
-
+      <img v-if="itemData.results.bindings[0].image !== undefined" :src='itemData.results.bindings[0].image.value' width="160"  alt="Wikidata best image">
+      <div v-else>No image available</div>
     </div>
     <div class="info">
-      <h1>{{ itemData.results.bindings[0].itemLabel.value }}</h1>
+      <p class="tag">{{ this.currentTag }}</p>
+      <p class="label">{{ itemData.results.bindings[0].itemLabel.value ?? "no label available" }}</p>
+      <p class="description">{{ getItemDescription(itemData.results.bindings[0]) }}</p>
     </div>
   </div>
   <div v-else class="noData">
@@ -25,7 +28,8 @@ export default {
   },
   data () {
     return {
-      itemData: null
+      itemData: null,
+      currentTag: ''
     }
   },
   watch: {
@@ -37,7 +41,7 @@ export default {
     this.debouncedWatch = debounce((val, _) => {
       const currentValue = this.getValueFromJson(val)
       this.getInformationFromQTag(currentValue)
-    }, 2000)
+    }, 1300)
   },
   methods: {
     getValueFromJson (rank) {
@@ -51,9 +55,17 @@ export default {
         .get(encodeURI(url))
         .then(response => (this.itemData = response.data))
         .catch(error => console.log(error))
+      this.currentTag = qTag
     },
     getInformationFromArray (coords) {
 
+    },
+    getItemDescription (item) {
+      if (item.itemDescription !== undefined) {
+        return item.itemDescription.value
+      } else {
+        return 'No description available'
+      }
     }
   },
   beforeUnmount () {
@@ -63,6 +75,57 @@ export default {
 </script>
 
 <style scoped>
+
+.container {
+  border: 1px solid grey;
+  border-radius: 8px;
+  display: flex;
+  align-content: space-between;
+  width: 400px;
+}
+
+.image {
+  min-width: 160px;
+  max-height: 150px;
+  aspect-ratio: auto;
+  padding: 16px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.info {
+  padding: 16px 16px 16px 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: left;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.info p {
+  margin: 0 0 5px 0;
+  text-overflow: fade;
+}
+
+.tag {
+  font-size: 0.8em;
+}
+
+.label {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 1em;
+  text-wrap: normal;
+}
 
 .noData {
   box-sizing: border-box;
