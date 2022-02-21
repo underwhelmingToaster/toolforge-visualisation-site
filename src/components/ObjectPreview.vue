@@ -4,7 +4,7 @@
 
     </div>
     <div class="info">
-      <h1>{{ itemData.results.bindings[0].item }}</h1>
+      <h1>{{ itemData.results.bindings[0].itemLabel.value }}</h1>
     </div>
   </div>
   <div v-else class="noData">
@@ -13,8 +13,8 @@
 </template>
 
 <script>
-// import query from '@/assets/query.txt'
-// import axios from 'axios'
+import query from '@/assets/query.txt'
+import axios from 'axios'
 import debounce from 'lodash.debounce'
 
 export default {
@@ -45,15 +45,12 @@ export default {
       return item[0]
     },
     getInformationFromQTag (qTag) {
-      console.log(qTag)
-      /*
-      const url = 'https://query.wikidata.org/sparql?query='
+      const endPoint = 'https://query.wikidata.org/sparql?query='
+      const url = endPoint + query.replace('QTAG', qTag) + '&format=json'
       axios
-        .get(url + query.replace('QTAG', this.currentTooltipRank) + '&format=json')
+        .get(encodeURI(url))
         .then(response => (this.itemData = response.data))
         .catch(error => console.log(error))
-
-       */
     },
     getInformationFromArray (coords) {
 
