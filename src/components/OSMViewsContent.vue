@@ -1,10 +1,10 @@
 <template>
   <div
     class="container"
-    v-if="jsonData !== null">
+    v-if="store.osmData !== null">
     <div class="sub-container">
       <DistributionViewer
-        :json-data=jsonData
+        :json-data=store.osmData
         :x-log=true
         :y-log=true
         :width=subContainerWidth
@@ -18,7 +18,7 @@
         class="leaflet-map-pane">
         <Map
           :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"
-          :json-data="jsonData"
+          :json-data="store.osmData"
           :current-tooltip-rank="store.currentTooltipRank"
         />
       </div>
@@ -37,9 +37,6 @@ export default {
   components: {
     Map,
     DistributionViewer
-  },
-  props: {
-    jsonData: Object
   },
   data () {
     return {

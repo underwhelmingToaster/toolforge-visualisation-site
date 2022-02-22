@@ -1,8 +1,8 @@
 <template>
-  <div class="container" v-if="jsonData !== null">
+  <div class="container" v-if="store.qrankData !== null">
     <div class="graph">
       <DistributionGraph
-        :json-data=jsonData
+        :json-data=store.qrankData
         :y-log=true
         :height=graphHeight
         :width=graphWidth
@@ -10,7 +10,7 @@
       />
     </div>
     <div class="objectPreview">
-      <ObjectPreview :json-data=jsonData :currentTooltipRank=this.store.currentTooltipRank />
+      <ObjectPreview :json-data=store.qrankData :currentTooltipRank=this.store.currentTooltipRank />
     </div>
   </div>
   <p v-else>Could not get QRank data.</p>
@@ -23,9 +23,6 @@ import { store } from '@/store'
 
 export default {
   name: 'QRank-content',
-  props: {
-    jsonData: Object
-  },
   data () {
     return {
       store,

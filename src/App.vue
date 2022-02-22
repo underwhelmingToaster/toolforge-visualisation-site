@@ -1,8 +1,7 @@
 <template>
   <div class="App">
     <Tabs />
-    <QRankContent :json-data=qrankData v-if="store.tab === 0" />
-    <OSMViewsContent :json-data=osmData v-else-if="store.tab === 1"/>
+    <component :is="currentView" />
   </div>
 </template>
 
@@ -11,25 +10,39 @@ import { store } from '@/store.js'
 import Tabs from '@/components/Tabs'
 import QRankContent from '@/components/QRankContent'
 import OSMViewsContent from '@/components/OSMViewsContent'
+import NotFound from '@/components/NotFound'
 import axios from 'axios'
+
+const routes = {
+  '/': QRankContent,
+  '/qrank': QRankContent,
+  '/osm-views': OSMViewsContent
+}
 
 export default {
   name: 'App',
   components: {
-    Tabs,
-    QRankContent,
-    OSMViewsContent
+    Tabs
   },
   data () {
     return {
-      store,
-      qrankData: null,
-      osmData: null
+      currentPath: window.location.hash,
+      store
     }
   },
+  computed: {
+    currentView () {
+      return routes[this.currentPath.slice(1) || '/'] || NotFound
+    }
+  },
+  mounted () {
+    window.addEventListener('hashchange', () => {
+      this.currentPath = window.location.hash
+    })
+  },
   beforeCreate () {
-    axios.get('https://qrank.wmcloud.org/download/qrank-stats.json').then(response => (this.qrankData = response.data))
-    axios.get('https://qrank.wmcloud.org/download/osmviews-stats.json').then(response => (this.osmData = response.data))
+    axios.get('https://qrank.wmcloud.org/download/qrank-stats.json').then(response => (store.qrankData = response.data))
+    axios.get('https://qrank.wmcloud.org/download/osmviews-stats.json').then(response => (store.osmData = response.data))
   }
 }
 </script>

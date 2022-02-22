@@ -1,7 +1,7 @@
 <template>
   <div class="tabBar">
-    <button class="tab active" @click="setTab(0)">QRank</button>
-    <button class="tab" @click="setTab(1)" >OSM Views</button>
+    <a href="#/qrank"><button class="tab active">QRank</button></a>
+    <a href="#/osm-views"><button class="tab">OSM Views</button></a>
   </div>
 </template>
 

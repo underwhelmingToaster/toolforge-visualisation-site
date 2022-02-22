@@ -1,7 +1,8 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-  tab: 0,
+  qrankData: null,
+  osmData: null,
   currentTooltipRank: 0,
   currentLink: ''
 })
