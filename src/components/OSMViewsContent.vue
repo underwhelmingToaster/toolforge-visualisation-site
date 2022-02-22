@@ -16,7 +16,11 @@
       <div
         :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"
         class="leaflet-map-pane">
-        <Map :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"/>
+        <Map
+          :style="{'width': subContainerWidth + 'px', 'height': subContainerHeight + 'px'}"
+          :json-data="jsonData"
+          :current-tooltip-rank="store.currentTooltipRank"
+        />
       </div>
     </div>
   </div>
@@ -26,6 +30,7 @@
 <script>
 import Map from '@/components/Map'
 import DistributionViewer from '@/components/DistributionGraph'
+import { store } from '@/store'
 
 export default {
   name: 'OSMViewsContent',
@@ -38,6 +43,7 @@ export default {
   },
   data () {
     return {
+      store,
       subContainerHeight: 0,
       subContainerWidth: 0
     }

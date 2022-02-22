@@ -7,27 +7,45 @@
     <l-tile-layer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     ></l-tile-layer>
+    <l-marker :lat-lng="markerLoc" v-if="markerLoc !== null"/>
   </l-map>
 </template>
 
 <script>
-import { LMap, LTileLayer } from '@vue-leaflet/vue-leaflet'
+import { LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 
 export default {
   name: 'Map',
   props: {
-    height: Number,
-    width: Number
+    jsonData: Object,
+    currentTooltipRank: Number
   },
   components: {
     LMap,
-    LTileLayer
+    LTileLayer,
+    LMarker
+  },
+  watch: {
+    currentTooltipRank (val, _) {
+      this.markerLoc = this.getValueFromJson(val)
+    }
   },
   data () {
     return {
       center: [49.1193089, 6.1757156],
-      zoom: 12
+      zoom: 12,
+      markerLoc: [47.57, 7.26]
+    }
+  },
+  methods: {
+    getValueFromJson (rank) {
+      const item = this.jsonData.Samples.find(item => item[1] === rank)
+      if (item === undefined) {
+        return null
+      } else {
+        return item[0]
+      }
     }
   }
 }

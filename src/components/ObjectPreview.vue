@@ -54,9 +54,6 @@ export default {
         .catch(error => console.log(error))
       this.currentTag = qTag
     },
-    getInformationFromArray (coords) {
-
-    },
     getItemDescription (item) {
       if (item.itemDescription !== undefined) {
         return item.itemDescription.value
