@@ -7,7 +7,7 @@
     <l-tile-layer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     ></l-tile-layer>
-    <l-marker :lat-lng="markerLoc" v-if="markerLoc !== null"/>
+    <l-marker :lat-lng="markerLoc" v-if="displayMarker === true"/>
   </l-map>
 </template>
 
@@ -29,7 +29,9 @@ export default {
   },
   watch: {
     currentTooltipRank (val, _) {
-      this.markerLoc = this.getValueFromJson(val)
+      const markerLocation = this.getValueFromJson(val)
+      this.displayMarker = markerLocation !== null
+      this.markerLoc = markerLocation ?? [0, 0]
       store.currentLink = 'https://www.openstreetmap.org/#map=16/' + this.markerLoc[0] + '/' + this.markerLoc[1]
     }
   },
@@ -37,7 +39,8 @@ export default {
     return {
       center: [49.1193089, 6.1757156],
       zoom: 2,
-      markerLoc: [47.57, 7.26]
+      markerLoc: [47.57, 7.26],
+      displayMarker: false
     }
   },
   methods: {

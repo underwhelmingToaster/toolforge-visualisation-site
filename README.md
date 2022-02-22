@@ -5,3 +5,6 @@
 - store tab index in url
 - axis labels
 - handle failed API calls
+- maybe launch window on dblklick or auxklick
+- find a way to label OSM Graph better
+- find good debounce value & maybe loading indicator?
