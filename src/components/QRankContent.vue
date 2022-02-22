@@ -44,16 +44,16 @@ export default {
     },
     calculateGraphHeight (windowHeight, windowWidth) {
       if (windowHeight < 500) {
-        return (500 - 100) * 0.8
+        return (500 - 100) * 0.7
       } else {
-        return (windowHeight - 100) * 0.8
+        return (windowHeight - 100) * 0.7
       }
     },
     calculateGraphWidth (windowHeight, windowWidth) {
       if (windowWidth < 800) {
-        return 800 * 0.8
+        return 800 * 0.75
       } else {
-        return windowWidth * 0.8
+        return windowWidth * 0.75
       }
     }
   },

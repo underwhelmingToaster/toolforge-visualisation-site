@@ -105,6 +105,8 @@ export default {
             const yVal = u.data[i][idx]
             if (xVal !== undefined) {
               store.currentTooltipRank = xVal
+            } else {
+              store.currentTooltipRank = null
             }
             tt.textContent = '(Rank: ' + xVal + ' / Views: ' + yVal + ')'
             tt.style.left = Math.round(u.valToPos(xVal, 'x')) + 'px'

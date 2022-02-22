@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="itemData !== null" >
+  <div class="container" v-if="itemData !== null && currentTooltipRank !== null" >
     <div class="image">
       <img v-if="itemData.results.bindings[0].image !== undefined" :src='itemData.results.bindings[0].image.value' width="160"  alt="Wikidata best image">
       <div v-else>No image available</div>
@@ -9,9 +9,6 @@
       <p class="label">{{ itemData.results.bindings[0].itemLabel.value ?? "no label available" }}</p>
       <p class="description">{{ getItemDescription(itemData.results.bindings[0]) }}</p>
     </div>
-  </div>
-  <div v-else class="noData">
-    todo
   </div>
 </template>
 
@@ -41,7 +38,7 @@ export default {
     this.debouncedWatch = debounce((val, _) => {
       const currentValue = this.getValueFromJson(val)
       this.getInformationFromQTag(currentValue)
-    }, 1300)
+    }, 500)
   },
   methods: {
     getValueFromJson (rank) {
@@ -125,13 +122,6 @@ img {
 .description {
   font-size: 1em;
   text-wrap: normal;
-}
-
-.noData {
-  box-sizing: border-box;
-  border: 3px solid black;
-  width: 300px;
-  height: 100px;
 }
 
 </style>
