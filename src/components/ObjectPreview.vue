@@ -16,6 +16,7 @@
 import query from '@/assets/query.txt'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
+import { store } from '@/store'
 
 export default {
   name: 'ObjectPreview',
@@ -25,6 +26,7 @@ export default {
   },
   data () {
     return {
+      store,
       itemData: null,
       currentTag: ''
     }
@@ -37,20 +39,29 @@ export default {
   created () {
     this.debouncedWatch = debounce((val, _) => {
       const currentValue = this.getValueFromJson(val)
-      this.getInformationFromQTag(currentValue)
+      if (currentValue !== null) {
+        this.getInformationFromQTag(currentValue)
+      }
     }, 500)
   },
   methods: {
     getValueFromJson (rank) {
       const item = this.jsonData.Samples.find(item => item[1] === rank)
-      return item[0]
+      if (item === undefined) {
+        return null
+      } else {
+        return item[0]
+      }
     },
     getInformationFromQTag (qTag) {
       const endPoint = 'https://query.wikidata.org/sparql?query='
       const url = endPoint + query.replace('QTAG', qTag) + '&format=json'
       axios
         .get(encodeURI(url))
-        .then(response => (this.itemData = response.data))
+        .then(response => {
+          this.itemData = response.data
+          store.currentLink = response.data.results.bindings[0].item.value
+        })
         .catch(error => console.log(error))
       this.currentTag = qTag
     },

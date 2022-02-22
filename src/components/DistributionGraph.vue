@@ -2,6 +2,7 @@
   <UplotVue
     :data="graphData"
     :options="opts"
+    @click="launchUrl"
   />
 </template>
 
@@ -120,6 +121,9 @@ export default {
           setCursor
         }
       }
+    },
+    launchUrl () {
+      window.open(store.currentLink)
     }
   },
   beforeMount () {
@@ -135,6 +139,7 @@ export default {
   },
   data () {
     return {
+      store,
       graphData: [],
       opts: {
         title: 'View Distribution',
