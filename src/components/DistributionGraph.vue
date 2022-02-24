@@ -2,7 +2,6 @@
   <UplotVue
     :data="graphData"
     :options="opts"
-    @click="launchUrl"
   />
 </template>
 
@@ -12,6 +11,9 @@ import UplotVue from 'uplot-vue'
 import 'uplot/dist/uPlot.min.css'
 import { store } from '@/store'
 
+const sups = '⁰¹²³⁴⁵⁶⁷⁸⁹'.split('')
+const neg = '⁻'
+
 export default {
   name: 'QRank-content',
   props: {
@@ -20,6 +22,10 @@ export default {
       required: true
     },
     xLog: {
+      type: Boolean,
+      default: false
+    },
+    xExponentialLabels: {
       type: Boolean,
       default: false
     },
@@ -145,7 +151,16 @@ export default {
         title: 'View Distribution',
         axes: [
           {
-            space: 100
+            space: 100,
+            values: this.xExponentialLabels ? (self, splits) => splits.map(v => {
+              if (v == null) {
+                return null
+              }
+              const exp = Math.log10(v)
+              const aexp = Math.abs(exp)
+              const supExp = ('' + aexp).split('').map(s => sups[+s]).join('')
+              return '10' + (exp < 0 ? neg : '') + supExp
+            }) : null
           },
           {
             size: 100,

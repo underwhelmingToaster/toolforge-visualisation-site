@@ -7,6 +7,7 @@
         :json-data=store.osmData
         :x-log=true
         :y-log=true
+        :x-exponential-labels=true
         :width=subContainerWidth
         :height=subContainerHeight
         :key="'Graph OSMViews ' +subContainerWidth + '/' + subContainerHeight"
