@@ -1,5 +1,6 @@
 <template>
   <div class="App">
+    <Info />
     <Tabs />
     <component :is="currentView" />
   </div>
@@ -11,6 +12,7 @@ import Tabs from '@/components/Tabs'
 import QRankContent from '@/components/QRankContent'
 import OSMViewsContent from '@/components/OSMViewsContent'
 import NotFound from '@/components/NotFound'
+import Info from '@/components/Info'
 import axios from 'axios'
 
 const routes = {
@@ -22,7 +24,8 @@ const routes = {
 export default {
   name: 'App',
   components: {
-    Tabs
+    Tabs,
+    Info
   },
   data () {
     return {
@@ -52,7 +55,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
   margin-top: 8px;
 }

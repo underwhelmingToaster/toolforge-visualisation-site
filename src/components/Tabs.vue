@@ -36,8 +36,6 @@ export default {
 <style scoped>
   .tabBar {
     overflow: hidden;
-    display: flex;
-    justify-content: center;
     margin: 16px;
   }
 
@@ -68,7 +66,6 @@ export default {
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: baseline;
-    min-width: 7em;
   }
 
   .tab:hover,
