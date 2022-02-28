@@ -1,20 +1,10 @@
 <template>
-  <l-map
-    :zoom="zoom"
-    :center="center"
-    class="map"
-  >
-    <l-tile-layer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    ></l-tile-layer>
-    <l-marker :lat-lng="markerLoc" v-if="displayMarker === true"/>
-  </l-map>
+  <JsMap :marker-loc="markerLoc"/>
 </template>
 
 <script>
-import { LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet'
-import 'leaflet/dist/leaflet.css'
 import { store } from '@/store'
+import JsMap from '@/components/JsMap'
 
 export default {
   name: 'Map',
@@ -23,9 +13,7 @@ export default {
     currentTooltipRank: Number
   },
   components: {
-    LMap,
-    LTileLayer,
-    LMarker
+    JsMap
   },
   watch: {
     currentTooltipRank (val, _) {
@@ -57,8 +45,5 @@ export default {
 </script>
 
 <style scoped>
-.map {
-  position: absolute;
-  overflow: hidden;
-}
+
 </style>
