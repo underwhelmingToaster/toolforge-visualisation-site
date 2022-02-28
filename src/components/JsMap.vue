@@ -6,38 +6,42 @@
 import 'leaflet/dist/leaflet.css'
 import * as L from 'leaflet/dist/leaflet'
 import * as markerSVG from '@/assets/marker.svg'
-import * as L2 from 'leaflet-geotiff/leaflet-geotiff'
+
 let map
 let marker
+const icon = L.icon({
+  iconUrl: markerSVG,
+  iconSize: [50, 50]
+})
 
 export default {
   name: 'JsMap',
   props: {
-    markerLoc: Array
+    markerLoc: Array,
+    displayMarker: Boolean,
+    geoTiffImage: Object
   },
   watch: {
     markerLoc (val, _) {
+      if (marker.map === null) {
+        marker.addTo(map)
+      }
       marker.setLatLng(val)
+    },
+    displayMarker (val, _) {
+      if (val) {
+        marker.addTo(map)
+      } else {
+        marker.remove()
+      }
     }
   },
   mounted () {
-    const icon = L.icon({
-      iconUrl: markerSVG,
-      iconSize: [50, 50]
-    })
-
-    const opts = {
-    }
-
     map = L.map('map').setView([51.505, -0.09], 2)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
-
-    const geoTIFFlayer = new L2.LeafletGeotiff('https://qrank.wmcloud.org/download/osmviews.tiff', opts)
-    geoTIFFlayer.addTo(map)
-
     marker = L.marker(this.markerLoc, { icon: icon })
   }
 }

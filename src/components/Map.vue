@@ -1,5 +1,5 @@
 <template>
-  <JsMap :marker-loc="markerLoc"/>
+  <JsMap :marker-loc="markerLoc" :display-marker="displayMarker" />
 </template>
 
 <script>
