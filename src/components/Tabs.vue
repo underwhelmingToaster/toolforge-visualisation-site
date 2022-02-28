@@ -1,6 +1,6 @@
 <template>
   <div class="tabBar">
-    <a href="#/qrank"><button class="tab active">QRank</button></a>
+    <a href="#/qrank"><button class="tab">QRank</button></a>
     <a href="#/osm-views"><button class="tab">OSM Views</button></a>
   </div>
 </template>
