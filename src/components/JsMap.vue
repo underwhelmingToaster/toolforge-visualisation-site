@@ -37,7 +37,7 @@ export default {
     }
   },
   mounted () {
-    map = L.map('map').setView([51.505, -0.09], 2)
+    map = L.map('map').setView([40.505, 11.00], 2)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
