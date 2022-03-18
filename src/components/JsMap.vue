@@ -43,13 +43,38 @@ export default {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
     marker = L.marker(this.markerLoc, { icon: icon })
+
+    this.generateHeatmap()
+  },
+  methods: {
+    generateHeatmap () {
+      const parseGeoraster = require('georaster')
+      const GeoRasterLayer = require('georaster-layer-for-leaflet')
+
+      const url = 'https://qrank.wmcloud.org/download/osmviews.tiff'
+
+      fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(console.log('1'))
+        .then(arrayBuffer => {
+          parseGeoraster(arrayBuffer).then(georaster => {
+            console.log('georaster:', georaster)
+            const layer = new GeoRasterLayer({
+              georaster: georaster,
+              opacity: 0.7,
+              pixelValuesToColorFn: values => values[0] === 42 ? '#ffffff' : '#000000',
+              resolution: 64
+            })
+            layer.addTo(map)
+          })
+        })
+    }
   }
 }
 </script>
 
 <style scoped>
 #map {
-  height: 180px;
   position: absolute;
   overflow: hidden;
 }
