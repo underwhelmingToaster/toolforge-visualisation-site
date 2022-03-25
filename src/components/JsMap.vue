@@ -67,21 +67,21 @@ export default {
       fromUrl(url)
         .then(async tiff => {
           this.geoTIFFImage = await tiff.getImage()
-          this.geoTiffData = await this.geoTIFFImage.readRasters({ bbox: [map.getBounds().getNorth(), map.getBounds().getEast(), map.getBounds().getSouth(), map.getBounds().getWest()] })
-          console.log(this.geoTiffData)
+          console.log(this.geoTIFFImage.getBoundingBox())
+          this.geoTiffData = await this.geoTIFFImage.readRasters({ window: [-100, -100, 100, 100] })
           this.calculateWindow(this.geoTIFFImage)
+          this.createPlot(this.geoTiffData)
         })
     },
     createPlot (data) {
       const canvas = document.getElementById('plot')
-
+      const max = Math.log10(Math.max.apply(null, data[0]))
       const plot = new plotty.plot({
         canvas,
-        data: data[0],
-        width: 100,
-        height: 100,
-        domain: [0, 256],
-        colorScale: 'viridis'
+        data: data[0].map(x => Math.log10(x)),
+        width: 400,
+        height: 400,
+        domain: [0, max]
       })
       plot.render()
       window.open(plot.canvas.toDataURL('image/png'))
