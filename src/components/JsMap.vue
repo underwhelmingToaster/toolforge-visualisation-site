@@ -28,7 +28,9 @@ export default {
   },
   data () {
     return {
-      geoTiffData: Object
+      geoTiffData: Object,
+      dataWidth: 500,
+      dataHeight: 500
     }
   },
   watch: {
@@ -48,6 +50,7 @@ export default {
   },
   mounted () {
     map = L.map('map').setView([40.505, 11.00], 2)
+    this.getGeoTiff()
     const self = this
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -62,43 +65,62 @@ export default {
     this.getValuesFromBoundaries()
   },
   methods: {
-    getValuesFromBoundaries () {
+    getGeoTiff () {
       const url = 'https://qrank.wmcloud.org/download/osmviews.tiff'
       fromUrl(url)
         .then(async tiff => {
           this.geoTIFFImage = await tiff.getImage()
-          console.log(this.geoTIFFImage.getBoundingBox())
-          this.geoTiffData = await this.geoTIFFImage.readRasters({ window: [-100, -100, 100, 100] })
-          this.calculateWindow(this.geoTIFFImage)
-          this.createPlot(this.geoTiffData)
+          console.log('Loaded geotiff')
         })
     },
+    async getValuesFromBoundaries () {
+      if (this.geoTIFFImage !== undefined) {
+        this.geoTiffData = await this.geoTIFFImage.readRasters({
+          window: this.getBounds()
+        })
+        this.calculateWindow(this.geoTIFFImage)
+        this.createPlot(this.geoTiffData)
+      } else {
+        console.log('Map not yet loaded')
+      }
+    },
     createPlot (data) {
+      console.log(data[0])
       const canvas = document.getElementById('plot')
-      const max = Math.log10(Math.max.apply(null, data[0]))
+      const dataLogarithm = data[0].map(x => Math.log10(x))
+      const max = (dataLogarithm.sort((a, b) => a - b))[dataLogarithm.length - 1]
+      console.log(max)
       const plot = new plotty.plot({
         canvas,
-        data: data[0].map(x => Math.log10(x)),
-        width: 400,
-        height: 400,
+        data: dataLogarithm,
+        width: this.dataWidth,
+        height: this.dataHeight,
         domain: [0, max]
       })
       plot.render()
       window.open(plot.canvas.toDataURL('image/png'))
-      console.log(plot)
     },
-    calculateWindow (image) {
-      const windowDimensions = this.calculateWindowDimensions(image)
-      const imageHeight = image.getHeight()
-      const imageWidth = image.getWidth()
-      const center = map.getCenter()
-      console.log(map.getBounds().getNorth())
-      console.log(windowDimensions - imageHeight - imageWidth + center)
+    getBounds () {
+      const window = this.calculateWindow().map(x => Math.round(x))
+      console.log(window)
+      this.dataHeight = window[3] - window[1]
+      this.dataWidth = window[2] - window[0]
+      console.log('Width: ' + this.dataWidth + ' / Height: ' + this.dataHeight)
+      return window
     },
-    calculateWindowDimensions (image) {
-      const width = map.getBounds().getEast() - map.getBounds().getWest()
-      const height = map.getBounds().getNorth() - map.getBounds().getSouth()
-      return [width, height]
+    calculateWindowFromBbox () {
+      const imageHeight = this.geoTIFFImage.getHeight()
+      const imageWidth = this.geoTIFFImage.getWidth()
+      const mapBounds = [map.getBounds().getNorth(), map.getBounds().getEast(), map.getBounds().getSouth(), map.getBounds().getWest()]
+      return [imageWidth * (mapBounds[3] / 180), imageHeight * (mapBounds[2] / 90), imageWidth * (mapBounds[1] / 180), imageHeight * (mapBounds[0] / 90)]
+    },
+    calculateWindow () {
+      // const imageHeight = this.geoTIFFImage.getHeight()
+      // const imageWidth = this.geoTIFFImage.getWidth()
+      const radius = 100 // TODO
+      const x = 100 // imageWidth * (map.getCenter().lat / 180)
+      const y = 100 // imageHeight * (map.getCenter().lng / 90)
+      return [x - radius, y - radius, x + radius, y + radius]
     }
   }
 }
