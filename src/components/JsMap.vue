@@ -57,7 +57,6 @@ export default {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map)
     map.on('zoomend', function () {
-      self.calculateWindow(self.geoTIFFImage)
       self.getValuesFromBoundaries()
     })
     marker = L.marker(this.markerLoc, { icon: icon })
@@ -88,8 +87,8 @@ export default {
       console.log(data[0])
       const canvas = document.getElementById('plot')
       const dataLogarithm = data[0].map(x => Math.log10(x))
-      const max = (dataLogarithm.sort((a, b) => a - b))[dataLogarithm.length - 1]
-      console.log(max)
+      const max = this.getArrayMax(dataLogarithm)
+      console.log('Max Value: ' + max)
       const plot = new plotty.plot({
         canvas,
         data: dataLogarithm,
@@ -99,6 +98,18 @@ export default {
       })
       plot.render()
       window.open(plot.canvas.toDataURL('image/png'))
+    },
+    getArrayMax (array) {
+      const samplePoints = 100
+      const sampleInterval = array.length / samplePoints + 1
+      let i = 0
+      let max = 0
+      while (i < array.length) {
+        if (max < array[i]) { max = array[i] }
+        i += sampleInterval
+        console.log(max)
+      }
+      return max
     },
     getBounds () {
       const window = this.calculateWindow().map(x => Math.round(x))
@@ -118,8 +129,8 @@ export default {
       // const imageHeight = this.geoTIFFImage.getHeight()
       // const imageWidth = this.geoTIFFImage.getWidth()
       const radius = 100 // TODO
-      const x = 100 // imageWidth * (map.getCenter().lat / 180)
-      const y = 100 // imageHeight * (map.getCenter().lng / 90)
+      const x = 1000 // imageWidth * (map.getCenter().lat / 180)
+      const y = 1000 // imageHeight * (map.getCenter().lng / 90)
       return [x - radius, y - radius, x + radius, y + radius]
     }
   }
